@@ -1,37 +1,40 @@
 package com.apavlidi.web;
 
-import com.apavlidi.domain.User;
-import com.apavlidi.service.UserService;
+import com.apavlidi.domain.Note;
+import com.apavlidi.service.NoteService;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
 
 @Named
 @RequestScoped
 public class Controller {
 
-    ArrayList<String> list = new ArrayList<String>() {{
-        add("A");
-        add("B");
-        add("C");
-    }};
+    @Inject
+    private NoteBean bean;
 
     @Inject
-    private UserService service;
+    private NoteService service;
 
-    public String hi() {
-        User newUser = new User();
-        newUser.setFirstName("BOOM");
-        return service.hiService(newUser);
+    @PostConstruct
+    public void initialize(){
+        bean.setNotes(service.findAllNotes());
     }
 
-    public ArrayList<String> getList() {
-        return list;
+    public void saveNote(){
+        Note note = new Note();
+        note.setText("First note");
+        bean.setSelectedNote(note);
+        service.persist(bean.getSelectedNote());
     }
 
-    public void setList(ArrayList<String> list) {
-        this.list = list;
+    public NoteBean getBean() {
+        return bean;
+    }
+
+    public void setBean(NoteBean bean) {
+        this.bean = bean;
     }
 }
