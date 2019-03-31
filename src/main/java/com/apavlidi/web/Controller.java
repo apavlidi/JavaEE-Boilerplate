@@ -4,13 +4,14 @@ import com.apavlidi.domain.Note;
 import com.apavlidi.service.NoteService;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 
-@Named
 @RequestScoped
-public class Controller {
+@Named(value = "controller")
+public class Controller implements Serializable {
 
     @Inject
     private NoteBean bean;
@@ -19,22 +20,19 @@ public class Controller {
     private NoteService service;
 
     @PostConstruct
-    public void initialize(){
-        bean.setNotes(service.findAllNotes());
+    public void initialize() {
+        bean.createNew();
     }
 
-    public void saveNote(){
+    public void saveNote() {
+        System.out.println(bean.getText());
         Note note = new Note();
-        note.setText("First note");
-        bean.setSelectedNote(note);
-        service.persist(bean.getSelectedNote());
+        note.setText(bean.getSelectedNote().getText());
+        service.persist(note);
     }
 
     public NoteBean getBean() {
         return bean;
     }
 
-    public void setBean(NoteBean bean) {
-        this.bean = bean;
-    }
 }

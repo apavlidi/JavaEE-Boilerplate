@@ -25,6 +25,14 @@
             <version>2.2</version>
         </dependency>
 
+        <!--Import JAX-RS-->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- DeltaSpike -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
