@@ -24,6 +24,14 @@ public class Note {
         this.text = text;
     }
 
+    public Long getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(Long noteId) {
+        this.noteId = noteId;
+    }
+
     public String getText() {
         return text;
     }

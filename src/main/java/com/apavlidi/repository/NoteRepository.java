@@ -13,6 +13,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 @Repository
@@ -30,5 +31,15 @@ public abstract class NoteRepository implements EntityRepository<Note, Long>, En
                 NoResultException nre) {
             return new ArrayList<>();
         }
+    }
+
+    public Optional<Note> findNoteById(Long noteId) {
+        return em.createQuery("select DISTINCT(t) from Note t where t.id=:noteId",
+                Note.class).setParameter("noteId", noteId).getResultStream().findFirst();
+    }
+
+    public Optional<Note> findNoteByText(String text) {
+        return em.createQuery("select DISTINCT(t) from Note t where t.text=:text",
+                Note.class).setParameter("text", text).getResultStream().findFirst();
     }
 }
