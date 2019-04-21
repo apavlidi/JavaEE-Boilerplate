@@ -6,6 +6,7 @@ import com.apavlidi.repository.NoteRepository;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,9 @@ public class NoteService {
 
     @Inject
     private NoteRepository noteRepository;
+
+    @Inject
+    private EntityManager entityManager;
 
     public List<Note> findAllNotes() {
         return noteRepository.findAllNotes();
@@ -50,7 +54,7 @@ public class NoteService {
     public void deleteNoteById(Long noteId) {
         Optional<Note> noteById = noteRepository.findNoteById(noteId);
         if (noteById.isPresent()) {
-            noteRepository.remove(noteById.get());
+            entityManager.remove(noteById.get());
         } else {
             throw new DataNotFoundException("Note with id:" + noteById + " not found");
         }
