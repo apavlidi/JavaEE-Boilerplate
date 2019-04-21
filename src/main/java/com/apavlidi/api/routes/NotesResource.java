@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/notes")
-public class NotificationsResource {
+public class NotesResource {
 
     @Inject
     private NoteService noteService;
@@ -20,12 +20,16 @@ public class NotificationsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(@QueryParam("text") String text,
                              @QueryParam("limit") int limit) {
-        if (!text.isEmpty()) {
+        if (text != null) {
             Note noteByText = noteService.findNoteByText(text);
             return Response.ok().entity(noteByText).build();
         } else {
             List<Note> allNotes = noteService.findAllNotes();
-            return Response.ok().entity(allNotes.subList(0, limit)).build();
+            if (limit != 0) {
+                return Response.ok().entity(allNotes.subList(0, limit)).build();
+            } else {
+                return Response.ok().entity(allNotes).build();
+            }
         }
     }
 

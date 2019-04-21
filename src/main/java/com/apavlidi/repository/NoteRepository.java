@@ -34,12 +34,24 @@ public abstract class NoteRepository implements EntityRepository<Note, Long>, En
     }
 
     public Optional<Note> findNoteById(Long noteId) {
-        return em.createQuery("select DISTINCT(t) from Note t where t.id=:noteId",
-                Note.class).setParameter("noteId", noteId).getResultStream().findFirst();
+        try {
+            Note note = em.createQuery("select DISTINCT(t) from Note t where t.id=:noteId",
+                    Note.class).setParameter("noteId", noteId).getSingleResult();
+            return Optional.ofNullable(note);
+        } catch (
+                NoResultException nre) {
+            return Optional.empty();
+        }
     }
 
     public Optional<Note> findNoteByText(String text) {
-        return em.createQuery("select DISTINCT(t) from Note t where t.text=:text",
-                Note.class).setParameter("text", text).getResultStream().findFirst();
+        try {
+            Note note = em.createQuery("select DISTINCT(t) from Note t where t.text=:text",
+                    Note.class).setParameter("text", text).getSingleResult();
+            return Optional.ofNullable(note);
+        } catch (
+                NoResultException nre) {
+            return Optional.empty();
+        }
     }
 }
