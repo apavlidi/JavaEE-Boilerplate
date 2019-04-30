@@ -3,6 +3,11 @@ package com.apavlidi.api.routes;
 import com.apavlidi.domain.User;
 import com.apavlidi.service.UserService;
 import java.util.List;
+import java.util.Properties;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
+import javax.batch.runtime.BatchStatus;
+import javax.batch.runtime.JobExecution;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -66,8 +71,20 @@ public class UserResource {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response postUser(User user) {
+  public Response postUser(User user) throws Exception {
     userService.persist(user);
+    callBatch();
     return Response.status(201).entity(user).build();
   }
+
+  private void callBatch() throws Exception {
+    JobOperator jobOperator = BatchRuntime.getJobOperator();
+    long executionId = jobOperator.start("simpleChunk", new Properties());
+    JobExecution jobExecution = jobOperator.getJobExecution(executionId);
+//    jobExecution = BatchTestHelper.keepTestAlive(jobExecution);
+    System.out.println("=========");
+    System.out.println(jobExecution.getBatchStatus());
+    System.out.println(BatchStatus.COMPLETED);
+  }
+
 }
