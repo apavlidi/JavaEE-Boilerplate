@@ -1,6 +1,6 @@
 # JavaEE-Boilerplate
 
-An enterprise web application based on JavaEE. The project supports JSF, EJB, JPA, CDI, Hibernate, Deltaspike, JAX-RS.
+An enterprise web application based on JavaEE. The project supports JSF, EJB, JPA, CDI, Hibernate, Deltaspike, JAX-RS, Java Batch Processing (JSR 352).
 
 ### Intro
 The project is an enterprise web application which uses the Admin Faces (https://adminfaces.github.io/site/) in order to provide a responsive and nice template. Its also based on the MVC pattern.
