@@ -16,4 +16,7 @@ To enable debugger you have also to configure your application server by tweakin
 The application is currently in development and its not yet fully implemented.
 
 ### Deploy the application:
-mvn clean install wildfly:deploy
+`mvn clean install wildfly:deploy`
+
+### Run Arquillian IT against Wildfly AS
+`mvn clean install -Pwildfly-managed`
