@@ -19,4 +19,5 @@ The application is currently in development and its not yet fully implemented.
 `mvn clean install wildfly:deploy`
 
 ### Run Arquillian IT against Wildfly AS
+The project supports running arquillian in a managed container for Widlfly AS.
 `mvn clean install -Pwildfly-managed`
