@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import com.apavlidi.api.exceptions.DataNotFoundException;
 import com.apavlidi.batch.BatchTestHelper;
-import com.apavlidi.batch.SimpleChunkItemReader;
 import com.apavlidi.domain.Note;
 import com.apavlidi.repository.NoteRepository;
 import com.apavlidi.service.NoteService;
@@ -29,10 +28,15 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class BasicTest {
 
+  private static final String BATCH_XML_PATH = "src/main/resources/META-INF/batch-jobs/simpleChunk.xml";
+  private static final String BEANS_XML_PATH = "src/main/webapp/WEB-INF/beans2.xml";
+
   @Deployment
   public static WebArchive createDeployment() {
 
     File[] pomDependencies = getPomDependencies();
+    File batchXml = new File(BATCH_XML_PATH);
+    File beansXml = new File(BEANS_XML_PATH);
 
     return ShrinkWrap.create(WebArchive.class)
         .addClass(Note.class)
@@ -43,22 +47,22 @@ public class BasicTest {
             DataNotFoundException.class.getPackage(),
             Note.class.getPackage(),
             BatchTestHelper.class.getPackage(),
-            SimpleChunkItemReader.class.getPackage(),
             EntityManagerProducer.class.getPackage())
         .addAsResource("META-INF/persistence.xml")
-        .addAsResource("META-INF/batch-jobs/simpleChunk.xml")
+        .addAsResource(batchXml,
+            "META-INF/batch-jobs/simpleChunk.xml")
         .addAsResource("META-INF/beans.xml")
         .addAsLibraries(pomDependencies);
   }
 
   private static File[] getPomDependencies() {
     return Maven.resolver()
-          .loadPomFromFile("pom.xml")
-          .importRuntimeDependencies()
-          .importTestDependencies()
-          .resolve()
-          .withTransitivity()
-          .asFile();
+        .loadPomFromFile("pom.xml")
+        .importRuntimeDependencies()
+        .importTestDependencies()
+        .resolve()
+        .withTransitivity()
+        .asFile();
   }
 
   @Inject
@@ -86,7 +90,7 @@ public class BasicTest {
   @Test
   public void givenChunk_thenBatch_completesWithSuccess() throws Exception {
     JobOperator jobOperator = BatchRuntime.getJobOperator();
-    Long executionId = jobOperator.start("simpleChunk", new Properties());
+    long executionId = jobOperator.start("simpleChunk", new Properties());
     JobExecution jobExecution = jobOperator.getJobExecution(executionId);
     jobExecution = BatchTestHelper.keepTestAlive(jobExecution);
     assertEquals(jobExecution.getBatchStatus(), BatchStatus.COMPLETED);
