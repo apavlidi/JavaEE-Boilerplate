@@ -29,14 +29,12 @@ import org.junit.runner.RunWith;
 public class BasicTest {
 
   private static final String BATCH_XML_PATH = "src/main/resources/META-INF/batch-jobs/simpleChunk.xml";
-  private static final String BEANS_XML_PATH = "src/main/webapp/WEB-INF/beans2.xml";
 
   @Deployment
   public static WebArchive createDeployment() {
 
     File[] pomDependencies = getPomDependencies();
     File batchXml = new File(BATCH_XML_PATH);
-    File beansXml = new File(BEANS_XML_PATH);
 
     return ShrinkWrap.create(WebArchive.class)
         .addClass(Note.class)

@@ -1,9 +1,22 @@
 <job id="simpleChunk">
-  <step id="firstChunkStep" >
-    <chunk item-count="3">
+  <step id="firstChunkStep" next="secondStep">
+    <listeners>
+      <listener ref="LogListener"/>
+    </listeners>
+    <chunk item-count="3" checkpoint-policy="custom" skip-limit="1" retry-limit="1">
       <reader ref="simpleChunkItemReader"/>
       <processor ref="simpleChunkItemProcessor"/>
       <writer ref="simpleChunkWriter"/>
+      <checkpoint-algorithm ref="customCheckPoint"/>
+      <skippable-exception-classes>
+        <include class="java.lang.RuntimeException"/>
+      </skippable-exception-classes>
+      <retryable-exception-classes>
+        <include class="java.lang.UnsupportedOperationException"/>
+      </retryable-exception-classes>
     </chunk>
+  </step>
+  <step id="secondStep">
+    <batchlet ref="simpleBatchLet"/>
   </step>
 </job>
