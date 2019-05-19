@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="#{layoutMB.template}">
+
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
+
+    <ui:define name="title">
+    </ui:define>
+
+    <ui:define name="body">
+<!--        <h:form>-->
+<!--            <h:panelGrid id="grid" cellpadding="5" columns="2" style="margin-bottom:10px">-->
+<!--                <f:facet name="header">-->
+<!--                    <p:messages id="msgs"/>-->
+<!--                </f:facet>-->
+
+<!--                <p:outputLabel for="noteText" value="Text:"/>-->
+<!--                <p:inputText id="noteText" value="#{newNoteController.bean.text}"/>-->
+
+<!--            </h:panelGrid>-->
+
+<!--            <h:panelGrid columns="6" cellpadding="5">-->
+<!--                <p:commandButton value="Form" id="btnForm" process="@form" update="grid"-->
+<!--                                 action="#{newNoteController.saveNote()}"/>-->
+<!--            </h:panelGrid>-->
+<!--        </h:form>-->
+        <h:form id="form" prependId="false">
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="Save" action="#{newNoteController.saveNote()}" update="@form"
+                                         icon="fa fa-check" styleClass="btn-primary"/>
+                        <p:spacer width="5" rendered="#{newNoteController.saveNote()}"/>
+                        <p:commandButton value="Clear" action="#{newNoteController.saveNote()}" process="@this"
+                                         icon="fa fa-refresh" styleClass="btn-success"
+                                         update="@form" rendered="#{true}" resetValues="true"/>
+                        <p:spacer width="5" rendered="#{not false}"/>
+
+                        <p:commandButton value="Delete" action="#{newNoteController.saveNote()}" process="@this"
+                                         rendered="#{not false}" icon="fa fa-trash"
+                                         styleClass="btn-danger">
+                            <f:setPropertyActionListener value="true"
+                                                         target="#{facesContext.externalContext.flash.keepMessages}"/>
+                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
+                        </p:commandButton>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="Back" immediate="true"
+                                         action="car-list?faces-redirect=true"
+                                         process="@this"
+                                         icon="fa fa-reply"/>
+                    </div>
+                    <p:splitButton value="Save" action="#{newNoteController.saveNote()}" update="@form"
+                                   icon="fa fa-check"
+                                   styleClass="hidden-md hidden-lg btn-primary">
+                        <p:menuitem value="Reset" action="#{newNoteController.saveNote()}"
+                                    process="@this" update="@form" rendered="#{true}"
+                                    resetValues="true" icon="fa fa-refresh"/>
+                        <p:menuitem value="Delete" action="#{newNoteController.saveNote()}" process="@this"
+                                    rendered="#{not false}" icon="fa fa-trash"
+                        >
+                            <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-danger"/>
+                        </p:menuitem>
+                        <p:separator/>
+                        <p:menuitem value="Back" action="car-list?faces-redirect=true"
+                                    process="@this" immediate="true"
+                                    icon="fa fa-reply"/>
+                    </p:splitButton>
+
+                    <p:separator/>
+
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-1">
+                            <p:outputLabel for="noteText" value="Text"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-4 ui-lg-5" >
+                            <p:inputText id="noteText" value="#{newNoteController.bean.text}" size="4"
+                                         readonly="false" styleClass="form-control" style="width: 100%"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger box-solid">
+                <p:commandButton value="Yes" type="button" styleClass="btn-primary ui-confirmdialog-yes"
+                                 icon="fa fa-check"/>
+                <p:commandButton value="No" type="button" styleClass="btn-danger ui-confirmdialog-no"
+                                 icon="fa fa-close"/>
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
